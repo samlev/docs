@@ -50,6 +50,8 @@
     - [Product Checkouts](#product-checkouts)
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
+    - [Collecting Tax IDs](#collecting-tax-ids)
+    - [Enabling Stripe Tax](#checkout-stripe-tax)
     - [Styling The Checkout Button](#styling-the-checkout-button)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
@@ -1088,6 +1090,27 @@ Cashier also offers the `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeAppli
 
 > {note} These methods are also available on any `Laravel\Cashier\Invoice` object. However, when invoked on an `Invoice` object, the methods will determine the exemption status at the time the invoice was created.
 
+<a name="subscription-stripe-tax"></a>
+#### Enabling Stripe Tax
+
+It's also possible instead of configuring tax rates manually, to let Stripe calculate the taxes for you. [Stripe Tax](https://stripe.com/tax) allows a transaction to automatically apply the correct taxes for you without you needing to configure anything. You can enable it using the `withTax` method when creating a subscription:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/user/subscribe', function (Request $request) {
+        $request->user()->newSubscription('default')
+            ->withTax()
+            ->create($request->paymentMethodId);
+
+        // ...
+    });
+
+With this method, your customer's invoice will have taxes applied automatically.
+
+It's important to say that for this feature to work properly, your customer needs to have its details filled out in Stripe properly. Their name, address and Tax ID needs to be set for Stripe to be able to calculate the taxes properly. You may use the [syncing customer data](#syncing-customer-data-with-stripe) method and the [Tax ID](#tax-ids) methods to do that.
+
+Stripe Tax is currently invite-only.
+
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
 
@@ -1586,6 +1609,15 @@ However, the trial period must be at least 48 hours, which is the minimum amount
 #### Subscriptions & Webhooks
 
 Remember, Stripe and Cashier update subscription statuses via webhooks, so there's a possibility a subscription might not yet be active when the customer returns to the application after entering their payment information. To handle this scenario, you may wish to display a message informing the user that their payment or subscription is pending.
+
+<a name="collecting-tax-ids"></a>
+### Collecting Tax IDs
+
+Checkout also supports collecting a customer's Tax ID. To enable this on a checkout session, use the `collectTaxIds` method when creating the session:
+
+    $checkout = $user->collectTaxIds()->checkout('price_tshirt');
+
+This will show a new checkbox to allow the customer to indicate if they're purchasing as a company, and if so, fill in their Tax ID number.
 
 <a name="styling-the-checkout-button"></a>
 ### Styling The Checkout Button
