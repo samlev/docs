@@ -735,6 +735,7 @@ Below is a list of all available validation rules and their function:
 [Prohibited](#rule-prohibited)
 [Prohibited If](#rule-prohibited-if)
 [Prohibited Unless](#rule-prohibited-unless)
+[Prohibited With](#rule-prohibited-with)
 [Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
@@ -1226,6 +1227,11 @@ The field under validation must be empty or not present if the _anotherfield_ fi
 #### prohibited_unless:_anotherfield_,_value_,...
 
 The field under validation must be empty or not present unless the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-prohibited-with"></a>
+#### prohibited_with:_anotherfield_,...
+
+The field under validation must not be present if any fields in _anotherfield_ are present.
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
