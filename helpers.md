@@ -116,6 +116,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
 [Str::isUuid](#method-str-is-uuid)
+[Str::join](#method-str-join)
+[Str::joinArray](#method-str-join-array)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
 [Str::length](#method-str-length)
@@ -190,6 +192,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
 [isUuid](#method-fluent-str-is-uuid)
+[join](#method-fluent-str-join)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
 [length](#method-fluent-str-length)
@@ -1508,6 +1511,36 @@ The `Str::isUuid` method determines if the given string is a valid UUID:
 
     // false
 
+<a name="method-str-join"></a>
+#### `Str::join()` {.collection-method}
+
+The `Str::join` method joins two strings with a single instance of the given value:
+
+    use Illuminate\Support\Str;
+
+    $joined = Str::join('https://example.com', '/', 'home');
+
+    // https://example.com/home
+
+    $joined = Str::join('https://example.com/', '/', '/home');
+
+    // https://example.com/home
+
+<a name="method-str-join-array"></a>
+#### `Str::joinArray()` {.collection-method}
+
+The `Str::joinArray` method joins array elements with a string, ensuring that the string is not repeated at any joins:
+
+    use Illuminate\Support\Str;
+
+    $joined = Str::joinArray(['https://example.com', 'api', 'endpoint'], '/');
+
+    // https://example.com/api/endpoint
+
+    $joined = Str::join(['https://example.com/', '/api/', '/endpoint'], '/');
+
+    // https://example.com/api/endpoint
+
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {.collection-method}
 
@@ -2410,6 +2443,25 @@ The `isUuid` method determines if a given string is a UUID:
     $result = Str::of('Taylor')->isUuid();
 
     // false
+
+<a name="method-fluent-str-join"></a>
+#### `join` {.collection-method}
+
+The `join` joins the elements of an array with the given string:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('/')->join(['http://example.com', 'api', 'endpoint']);
+
+    // http://example.com/api/endpoint
+
+Alternate use allows passing strings instead of an array:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('/')->join('http://example.com/', '/api', 'endpoint');
+
+    // http://example.com/api/endpoint
 
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {.collection-method}
